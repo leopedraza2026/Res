@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pollo Juanita: Gestión de Pedidos</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f26c0d",
+                        "primary-content": "#ffffff",
+                        "secondary": "#9c6c49",
+                        "background-light": "#f8f7f5",
+                        "background-dark": "#221710",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#2d241e",
+                        "border-light": "#e8d9ce",
+                        "border-dark": "#4a3b32",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #e8d9ce;
+            border-radius: 3px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #4a3b32;
+        }
+    </style>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-[#1c130d] dark:text-[#fcfaf8] font-display h-screen flex flex-col overflow-hidden">
+<header class="shrink-0 bg-surface-light dark:bg-surface-dark border-b border-border-light dark:border-border-dark px-4 py-3 flex flex-col gap-3 z-20 shadow-sm">
+<div class="flex items-center justify-between w-full">
+<div class="flex items-center gap-3">
+<button class="flex items-center justify-center p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined text-[24px]">menu</span>
+</button>
+<div>
+<h1 class="text-lg font-bold leading-tight">Pollo Juanita</h1>
+<p class="text-xs text-secondary dark:text-gray-400 font-medium">Sucursal Centro</p>
+</div>
+</div>
+<div class="flex items-center gap-2 bg-primary/10 dark:bg-primary/20 px-3 py-1.5 rounded-full border border-primary/20">
+<span class="material-symbols-outlined text-primary text-[18px]">receipt_long</span>
+<span class="text-primary font-bold text-sm">Orden #45</span>
+</div>
+</div>
+<div class="w-full flex gap-2">
+<div class="relative flex-1">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 material-symbols-outlined text-[20px]">search</span>
+<input class="w-full pl-10 pr-4 py-2.5 text-sm bg-background-light dark:bg-black/20 border border-border-light dark:border-border-dark rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent placeholder-gray-400 dark:placeholder-gray-500 outline-none transition-all" placeholder="Buscar por # orden, cliente o fecha..." type="text"/>
+</div>
+<button class="bg-primary hover:bg-primary/90 text-white rounded-lg px-4 flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</header>
+<div class="flex-1 flex flex-col relative overflow-hidden">
+<div class="shrink-0 bg-background-light dark:bg-background-dark z-10 pt-2">
+<div class="flex overflow-x-auto no-scrollbar px-4 gap-6 border-b border-border-light dark:border-border-dark snap-x">
+<button class="flex flex-col items-center gap-2 min-w-[60px] pb-3 border-b-[3px] border-primary text-primary snap-start">
+<span class="text-sm font-bold whitespace-nowrap">Todos</span>
+</button>
+<button class="flex flex-col items-center gap-2 min-w-[60px] pb-3 border-b-[3px] border-transparent text-secondary dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors snap-start">
+<span class="text-sm font-bold whitespace-nowrap">Pollo</span>
+</button>
+<button class="flex flex-col items-center gap-2 min-w-[60px] pb-3 border-b-[3px] border-transparent text-secondary dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors snap-start">
+<span class="text-sm font-bold whitespace-nowrap">Bonetes</span>
+</button>
+<button class="flex flex-col items-center gap-2 min-w-[60px] pb-3 border-b-[3px] border-transparent text-secondary dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors snap-start">
+<span class="text-sm font-bold whitespace-nowrap">Bebidas</span>
+</button>
+<button class="flex flex-col items-center gap-2 min-w-[60px] pb-3 border-b-[3px] border-transparent text-secondary dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors snap-start">
+<span class="text-sm font-bold whitespace-nowrap">Extras</span>
+</button>
+</div>
+</div>
+<main class="flex-1 overflow-y-auto p-4 pb-48"> 
+<div class="grid grid-cols-2 min-[480px]:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+<div class="group bg-surface-light dark:bg-surface-dark rounded-xl overflow-hidden shadow-sm border border-border-light dark:border-border-dark flex flex-col h-full active:scale-95 transition-transform duration-100 cursor-pointer">
+<div class="aspect-[4/3] bg-gray-200 dark:bg-gray-700 relative">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Golden crispy roasted chicken quarter served on a plate" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAeTScDTJ6-aPVEPUJxwpt9f9DT6lJM2IngXVa5Oht09_jz5HOJj1E6s7hJXv4jDjKxkrRC1DbmkNcGA-lGAJ_6Y5uvmfAQv6RODBJr7ga9dmo47sRCInyMFIFYR2_LVMVWEMThDLOIPWldvfvctpQja9hCgQ90dPOTkCDUTnt1kFZM3wOI5WFYMrDHQ6WfrFZ1OGUCcpwD2ueMGVtNgH5azGTTxdWcuFy9pWOTPD_PSMI6KmwWUGdEIWXETHPU0yoW5hDZwk7x-Q");'></div>
+<div class="absolute bottom-2 right-2 bg-black/60 backdrop-blur-sm px-2 py-1 rounded text-white text-xs font-bold">
+                        Bs 22.00
+                    </div>
+</div>
+<div class="p-3 flex flex-col flex-1">
+<h3 class="font-bold text-sm leading-tight mb-1 text-gray-900 dark:text-white">Cuarto de Pollo</h3>
+<p class="text-xs text-secondary dark:text-gray-400 line-clamp-2 leading-snug mb-3">Pierna o Pechuga con papas.</p>
+<div class="mt-auto flex justify-end">
+<button class="bg-primary/10 hover:bg-primary text-primary hover:text-white rounded-lg p-1.5 transition-colors">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+</div>
+</div>
+</div>
+<div class="group bg-surface-light dark:bg-surface-dark rounded-xl overflow-hidden shadow-sm border border-border-light dark:border-border-dark flex flex-col h-full active:scale-95 transition-transform duration-100 cursor-pointer">
+<div class="aspect-[4/3] bg-gray-200 dark:bg-gray-700 relative">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Half a roasted chicken golden brown with herbs" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCI9niMnw1-4RmXcmQkIGoXrK_vG1e2oBYElMcDMvtzfr1EXk7mmsEHOfNnSRWWTJAnUzeM4kySERezd81e3H3zCfSL0C8rAHdQnu4jfefrb6cBO4Ip_TdkRvKKxV2Me4gaYihFApE5k74KsxvcWMncednYBTXM1g-IncNl3qnO4XGBtE2cV2fGuyMwynNl2B9kvY01nuymmRPxcWC9SorTLpG2jxSeY1461BUpMy6SuzAkN__R1w11gwlR0H8orobTDFScrDbsEg");'></div>
+<div class="absolute bottom-2 right-2 bg-black/60 backdrop-blur-sm px-2 py-1 rounded text-white text-xs font-bold">
+                        Bs 40.00
+                    </div>
+</div>
+<div class="p-3 flex flex-col flex-1">
+<h3 class="font-bold text-sm leading-tight mb-1 text-gray-900 dark:text-white">Medio Pollo</h3>
+<p class="text-xs text-secondary dark:text-gray-400 line-clamp-2 leading-snug mb-3">2 presas con guarnición doble.</p>
+<div class="mt-auto flex justify-end">
+<button class="bg-primary/10 hover:bg-primary text-primary hover:text-white rounded-lg p-1.5 transition-colors">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+</div>
+</div>
+</div>
+<div class="group bg-surface-light dark:bg-surface-dark rounded-xl overflow-hidden shadow-sm border border-border-light dark:border-border-dark flex flex-col h-full active:scale-95 transition-transform duration-100 cursor-pointer">
+<div class="aspect-[4/3] bg-gray-200 dark:bg-gray-700 relative">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Small round cheesy bread buns in a basket" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBmhc4A0TugznN7GDnYIrVJkz614RV00kL3JhDpJYP4-ji9CxrDSDGgOKxedDCZUSNyHwwGW6RKJtNgsFPOes6TJWM1FYGZ1yVE6BMl0-J-Vmf77U82Li4Uw40cDom3lFR_5pm0osD4wPLJfjVwtSFgVQPACDFRl2vs5BW-rHi_XNtyNjb3Qnwp44_X2nN6m9PQDZ1SugtRSEn8zviIf1-nh8kmgejNNFRjaz2pLZzj9rFS2K00r8AmG3QSuCi3agScbMBhGfwjtA");'></div>
+<div class="absolute bottom-2 right-2 bg-black/60 backdrop-blur-sm px-2 py-1 rounded text-white text-xs font-bold">
+                        Bs 8.00
+                    </div>
+</div>
+<div class="p-3 flex flex-col flex-1">
+<h3 class="font-bold text-sm leading-tight mb-1 text-gray-900 dark:text-white">Porción Bonetes</h3>
+<p class="text-xs text-secondary dark:text-gray-400 line-clamp-2 leading-snug mb-3">6 unidades calientes.</p>
+<div class="mt-auto flex justify-end">
+<button class="bg-primary/10 hover:bg-primary text-primary hover:text-white rounded-lg p-1.5 transition-colors">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+</div>
+</div>
+</div>
+<div class="group bg-surface-light dark:bg-surface-dark rounded-xl overflow-hidden shadow-sm border border-border-light dark:border-border-dark flex flex-col h-full active:scale-95 transition-transform duration-100 cursor-pointer">
+<div class="aspect-[4/3] bg-gray-200 dark:bg-gray-700 relative">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Large bottle of Coca Cola soda" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCDkJlxYzkgSU1kXwYjtnKsVGY00KAV81iQ1VqIR_mm15B_HxVFg2EroYwjnmm7AfO5wvhiWXhJHJq8l_mGcJzoReLx75h-kS0oGLjg8izafFirtrx9RbLqBph1jHF18SVu-yelFmaUW9oSrotNYDCSw78NUFZ9HvwfVXmPIbzF38RsbtMMp0vVgKJBtYz0JoiAGUg7XuE8-J-iz34v6XY0J3hbJ6ElSNHXvCIZKZswGW6R8JTG7_b57R8LKsiZyCvbgvJUp-wjYQ");'></div>
+<div class="absolute bottom-2 right-2 bg-black/60 backdrop-blur-sm px-2 py-1 rounded text-white text-xs font-bold">
+                        Bs 15.00
+                    </div>
+</div>
+<div class="p-3 flex flex-col flex-1">
+<h3 class="font-bold text-sm leading-tight mb-1 text-gray-900 dark:text-white">Coca-Cola 2L</h3>
+<p class="text-xs text-secondary dark:text-gray-400 line-clamp-2 leading-snug mb-3">Botella retornable.</p>
+<div class="mt-auto flex justify-end">
+<button class="bg-primary/10 hover:bg-primary text-primary hover:text-white rounded-lg p-1.5 transition-colors">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+</div>
+</div>
+</div>
+<div class="group bg-surface-light dark:bg-surface-dark rounded-xl overflow-hidden shadow-sm border border-border-light dark:border-border-dark flex flex-col h-full active:scale-95 transition-transform duration-100 cursor-pointer">
+<div class="aspect-[4/3] bg-gray-200 dark:bg-gray-700 relative">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Crispy french fries in a paper cone" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDY19AM9aXKvHNJ0przkAoiHWSuS2QzLqjClgnADRM7u6duWv8VfDxSCIsceYUHMJ2V1ehAT_onB3Kgp_k-gjeXA_7LI8h_OetK9Ib4whpl7Y_PcNEvrxm5milgBUpuov-oO3QbIfvAE_CjAB5UJkwjjZ4Usc08L9qrylwwfKROtSgUYDK5lR6wrxt1t4nEJVYuOZCVvn6aPbtp52zWG8T4RydO8tgbSo9ojpAHbs1tklGtNG8uSq1vfXp_-DxPAM9JKr84NvRE6g");'></div>
+<div class="absolute bottom-2 right-2 bg-black/60 backdrop-blur-sm px-2 py-1 rounded text-white text-xs font-bold">
+                        Bs 10.00
+                    </div>
+</div>
+<div class="p-3 flex flex-col flex-1">
+<h3 class="font-bold text-sm leading-tight mb-1 text-gray-900 dark:text-white">Papas Fritas</h3>
+<p class="text-xs text-secondary dark:text-gray-400 line-clamp-2 leading-snug mb-3">Porción extra grande.</p>
+<div class="mt-auto flex justify-end">
+<button class="bg-primary/10 hover:bg-primary text-primary hover:text-white rounded-lg p-1.5 transition-colors">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+</div>
+</div>
+</div>
+<div class="group bg-surface-light dark:bg-surface-dark rounded-xl overflow-hidden shadow-sm border border-border-light dark:border-border-dark flex flex-col h-full active:scale-95 transition-transform duration-100 cursor-pointer">
+<div class="aspect-[4/3] bg-gray-200 dark:bg-gray-700 relative">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Whole roasted chicken served on a platter" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDPfvvGoZhTCFPrPtf404J553ygETD99MaJMJcRHQWflE0aOKVWjXu7rYhIUA7K1EU633IUuBO2b1XlgGOd0F9oQOMxpcsDKJHtuXKGFpsBhJCzf7M0skiBhmReGTN71D1B42kMLFKBWCT9gHQF-gbF7WzETKuMuMGnIYesibBMBa5kzK4jm8EZKHOokCpTbxqMBa079vkDGHombKjxIDqNX8jlczw8n24CCde0thLBmSKi4gHky2RS-WVJvxBy20Y1KNTU5M6-7g");'></div>
+<div class="absolute bottom-2 right-2 bg-black/60 backdrop-blur-sm px-2 py-1 rounded text-white text-xs font-bold">
+                        Bs 75.00
+                    </div>
+</div>
+<div class="p-3 flex flex-col flex-1">
+<h3 class="font-bold text-sm leading-tight mb-1 text-gray-900 dark:text-white">Pollo Entero</h3>
+<p class="text-xs text-secondary dark:text-gray-400 line-clamp-2 leading-snug mb-3">Para toda la familia.</p>
+<div class="mt-auto flex justify-end">
+<button class="bg-primary/10 hover:bg-primary text-primary hover:text-white rounded-lg p-1.5 transition-colors">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<div class="absolute bottom-0 left-0 right-0 z-30 flex flex-col max-h-[50vh] bg-surface-light dark:bg-surface-dark shadow-[0_-4px_20px_rgba(0,0,0,0.1)] rounded-t-2xl border-t border-border-light dark:border-border-dark">
+<div class="w-full flex justify-center pt-3 pb-1 cursor-grab active:cursor-grabbing">
+<div class="w-12 h-1.5 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+</div>
+<div class="px-5 pb-3 flex justify-between items-center border-b border-border-light dark:border-border-dark">
+<div class="flex items-center gap-2">
+<h2 class="text-base font-bold text-gray-900 dark:text-white">Resumen del Pedido</h2>
+<span class="bg-primary text-white text-xs font-bold px-2 py-0.5 rounded-full">3 ítems</span>
+</div>
+<button class="text-sm font-medium text-red-500 hover:text-red-700 dark:text-red-400">Limpiar</button>
+</div>
+<div class="overflow-y-auto p-4 flex flex-col gap-3">
+<div class="flex items-center gap-3">
+<div class="size-12 shrink-0 rounded-lg bg-cover bg-center border border-border-light dark:border-border-dark" data-alt="Thumbnail of chicken quarter" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCxdTmo7E5QTBcCKHdTo9y6nMQ3sK3uCcQDHt6qQdTuhQ2UGvqUoNCxr3wkf0kooYZ2HJRBIBpW2Xjip3fSTH4z2EbvU3AVZKPhmlw7rAKuL67DoqeIK8f4E8l6SmWUlJMHILrRvDyTC6BSEacEEHZZwPbEfXNqhdivbNUgOU5ajHr083W5kdoinbrzlPVhxdQtil-MjulyI7A1zdkJCT7-CcTwYr3mID8AzB24BaJvrsFRKzxk6Zp72feVBKBDs2MpDrGO0DNMhA");'></div>
+<div class="flex-1 min-w-0">
+<h4 class="text-sm font-bold truncate text-gray-900 dark:text-white">Cuarto de Pollo</h4>
+<p class="text-xs text-primary font-bold">Bs 44.00</p>
+</div>
+<div class="flex items-center bg-background-light dark:bg-black/20 rounded-lg border border-border-light dark:border-border-dark p-1">
+<button class="size-7 flex items-center justify-center rounded-md bg-white dark:bg-surface-dark text-gray-600 dark:text-gray-300 shadow-sm hover:text-primary active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[16px]">remove</span>
+</button>
+<span class="w-8 text-center text-sm font-bold">2</span>
+<button class="size-7 flex items-center justify-center rounded-md bg-primary text-white shadow-sm hover:bg-primary/90 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[16px]">add</span>
+</button>
+</div>
+<button class="size-8 shrink-0 flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+<div class="flex items-center gap-3">
+<div class="size-12 shrink-0 rounded-lg bg-cover bg-center border border-border-light dark:border-border-dark" data-alt="Thumbnail of cheese buns" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBrO6AA5gD8ZcYB0D45aDsp9BhvabQIp6tbaZhdXwh4p08THWjNc-tn-YaQeKJhSnvUMKHzgnEjmlz77UOuQxmQWTVnqaTkuEThTEQW3dH_geT0Nf_VR1uPMHKIE32-h07mxDr7ACYAjQjqgqQRZ1vJ0UjFKy1zRjpJtPr6Bi-yH6x5sHCM-376NRsI846Y9hfWNC1JNxv5KgLEkwVsIdUaPP7DMWU3RAzjMEvvacgwlYCbbOqNEMwfrp8Oq3WjSzNv-tD35Kbuxg");'></div>
+<div class="flex-1 min-w-0">
+<h4 class="text-sm font-bold truncate text-gray-900 dark:text-white">Bonetes (Porción)</h4>
+<p class="text-xs text-primary font-bold">Bs 8.00</p>
+</div>
+<div class="flex items-center bg-background-light dark:bg-black/20 rounded-lg border border-border-light dark:border-border-dark p-1">
+<button class="size-7 flex items-center justify-center rounded-md bg-white dark:bg-surface-dark text-gray-600 dark:text-gray-300 shadow-sm hover:text-primary active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[16px]">remove</span>
+</button>
+<span class="w-8 text-center text-sm font-bold">1</span>
+<button class="size-7 flex items-center justify-center rounded-md bg-primary text-white shadow-sm hover:bg-primary/90 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[16px]">add</span>
+</button>
+</div>
+<button class="size-8 shrink-0 flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+<div class="flex items-center gap-3">
+<div class="size-12 shrink-0 rounded-lg bg-cover bg-center border border-border-light dark:border-border-dark" data-alt="Thumbnail of soda bottle" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDz0dPpHB15Z6ZL9ZiQzUZJqwVe63Wak1wUJfXZj3IDlT9Tg2DHCMZLoH8yazJjIVpKqTUeHIAv8z7LxVHayLy5jJk34YstQOjbTxn_elhnIqo2svJbkfcKNut5gYfD_PICZv_8Sb3p-3pQDjlW0ebbKOs0qzSFU-1BFEWQc31T3J85RnfK26zB_0eeeKzt3t0STfeRgoIZ0zSOYnuhzpLHkHA3vUgbFSbVMcSJFMM67HLFQ_-wIClaQPVro9wI2gzouPcVtHrpIQ");'></div>
+<div class="flex-1 min-w-0">
+<h4 class="text-sm font-bold truncate text-gray-900 dark:text-white">Coca-Cola 2L</h4>
+<p class="text-xs text-primary font-bold">Bs 30.00</p>
+</div>
+<div class="flex items-center bg-background-light dark:bg-black/20 rounded-lg border border-border-light dark:border-border-dark p-1">
+<button class="size-7 flex items-center justify-center rounded-md bg-white dark:bg-surface-dark text-gray-600 dark:text-gray-300 shadow-sm hover:text-primary active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[16px]">remove</span>
+</button>
+<span class="w-8 text-center text-sm font-bold">2</span>
+<button class="size-7 flex items-center justify-center rounded-md bg-primary text-white shadow-sm hover:bg-primary/90 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[16px]">add</span>
+</button>
+</div>
+<button class="size-8 shrink-0 flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</div>
+<div class="p-4 bg-background-light dark:bg-surface-dark border-t border-border-light dark:border-border-dark">
+<div class="flex justify-between items-end mb-4">
+<div>
+<p class="text-xs text-secondary dark:text-gray-400 font-medium">Subtotal</p>
+<p class="text-2xl font-extrabold text-gray-900 dark:text-white leading-none">Bs 82.00</p>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="flex-1 h-12 rounded-xl border border-border-light dark:border-border-dark bg-white dark:bg-transparent text-gray-700 dark:text-gray-300 font-bold hover:bg-gray-50 dark:hover:bg-white/5 active:scale-[0.98] transition-all">
+                    Cancelar
+                </button>
+<button class="flex-[2] h-12 rounded-xl bg-primary text-white font-bold shadow-lg shadow-primary/25 hover:bg-primary/90 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+<span>Confirmar Pedido</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+
+</body></html>
